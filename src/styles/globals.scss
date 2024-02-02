@@ -133,6 +133,14 @@ a {
     display: none !important;
   }
 }
+.rc-scrollbars-track-h {
+  height: 4px !important;
+  bottom: 0px !important;
+}
+.rc-scrollbars-track-v {
+  width: 4px !important;
+  right: 0px !important;
+}
 
 //MuiDrawer-paper
 .logo-name {

@@ -1,5 +1,6 @@
-import Favicon from "@/components/common/Head/Favicon";
 import "@/styles/globals.scss";
+import "react-toastify/dist/ReactToastify.css";
+import Favicon from "@/components/common/Head/Favicon";
 import { Poppins, Roboto } from "next/font/google";
 import ThemeRegistry from "@/utility/ThemeRegistry/ThemeRegistry";
 import RtkProvider from "@/lib/rtk/RtkProvider";

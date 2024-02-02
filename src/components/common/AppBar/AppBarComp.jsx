@@ -1,11 +1,11 @@
 "use client";
-import { hdlDrawerOpen } from "@/lib/rtk/features/common/dashboardSlice";
+import { hdlDrawer } from "@/lib/rtk/features/common/dashboardSlice";
 import { AppBar, Box, Container, Grid } from "@mui/material";
 import { GiHamburgerMenu } from "react-icons/gi";
 import { useDispatch, useSelector } from "react-redux";
 import UserPanel from "./UserPanel";
 export default function AppBarComp() {
-  const { drawerOpen, drawerOpenWidth, drawerCloseWidth } = useSelector(
+  const { drawer, drawerOpenWidth, drawerCloseWidth } = useSelector(
     (state) => state.dashboard
   );
   const dispatch = useDispatch();
@@ -23,9 +23,7 @@ export default function AppBarComp() {
             sx={{
               width: "auto",
               ml: {
-                lg: drawerOpen
-                  ? `${drawerOpenWidth}px`
-                  : `${drawerCloseWidth}px`,
+                lg: drawer ? `${drawerOpenWidth}px` : `${drawerCloseWidth}px`,
               },
               transition: "margin linear 0.3s",
             }}
@@ -42,7 +40,7 @@ export default function AppBarComp() {
               <Box sx={{ svg: { display: { lg: "none" }, cursor: "pointer" } }}>
                 <GiHamburgerMenu
                   onClick={() => {
-                    dispatch(hdlDrawerOpen(true));
+                    dispatch(hdlDrawer(true));
                   }}
                 />
               </Box>

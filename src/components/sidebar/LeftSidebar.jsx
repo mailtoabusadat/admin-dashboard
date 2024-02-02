@@ -1,9 +1,8 @@
 "use client";
 import {
-  hdlDrawerOpen,
   hdlClickRadioBtn,
+  hdlDrawer,
   hdlExpandedNavItems,
-  hdlSelectedNavItems,
 } from "@/lib/rtk/features/common/dashboardSlice";
 import { Box, Drawer } from "@mui/material";
 import { useRef } from "react";
@@ -11,21 +10,20 @@ import { useDispatch, useSelector } from "react-redux";
 
 export default function NavSidebar({ children }) {
   const {
-    drawerOpen,
+    drawer,
     drawerOpenWidth,
     drawerCloseWidth,
     clickRadioBtn,
     expandedNavItemsBackUp,
-    selectedNavItemsBackUp,
   } = useSelector((state) => state.dashboard);
 
   const asideElement = useRef();
   const dispatch = useDispatch();
 
   const hdlMouseEnter = () => {
-    if (!clickRadioBtn && !drawerOpen) {
+    console.log("expandedNavItemsBackUp", expandedNavItemsBackUp);
+    if (!clickRadioBtn && !drawer) {
       asideElement.current.classList.add("aside-hover");
-      dispatch(hdlSelectedNavItems(selectedNavItemsBackUp));
       dispatch(hdlExpandedNavItems(expandedNavItemsBackUp));
     }
   };
@@ -33,8 +31,7 @@ export default function NavSidebar({ children }) {
   const hdlMouseLeave = () => {
     dispatch(hdlClickRadioBtn(false));
     asideElement.current.classList.remove("aside-hover");
-    if (!drawerOpen) {
-      dispatch(hdlSelectedNavItems([]));
+    if (!drawer) {
       dispatch(hdlExpandedNavItems([]));
     }
   };
@@ -45,7 +42,7 @@ export default function NavSidebar({ children }) {
       ref={asideElement}
       onMouseEnter={hdlMouseEnter}
       onMouseLeave={hdlMouseLeave}
-      className={drawerOpen ? "active" : ""}
+      className={drawer ? "active" : ""}
       sx={{
         ".MuiDrawer-paper": {
           width: `${drawerCloseWidth}px`,
@@ -63,8 +60,8 @@ export default function NavSidebar({ children }) {
         ModalProps={{
           keepMounted: true, // Better open performance on mobile.
         }}
-        open={drawerOpen}
-        onClose={() => dispatch(hdlDrawerOpen(false))}
+        open={drawer}
+        onClose={() => dispatch(hdlDrawer(false))}
         sx={{
           display: { xs: "none", lg: "block" },
         }}
@@ -77,8 +74,8 @@ export default function NavSidebar({ children }) {
         ModalProps={{
           keepMounted: true, // Better open performance on mobile.
         }}
-        open={drawerOpen}
-        onClose={() => dispatch(hdlDrawerOpen(false))}
+        open={drawer}
+        onClose={() => dispatch(hdlDrawer(false))}
         sx={{
           display: { xs: "block", lg: "none" },
         }}

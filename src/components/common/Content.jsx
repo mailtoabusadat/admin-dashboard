@@ -3,7 +3,7 @@ import { Box, Container, Grid } from "@mui/material";
 import { useSelector } from "react-redux";
 
 export default function Content({ children }) {
-  const { drawerOpen, drawerOpenWidth, drawerCloseWidth } = useSelector(
+  const { drawer, drawerOpenWidth, drawerCloseWidth } = useSelector(
     (state) => state.dashboard
   );
 
@@ -11,7 +11,7 @@ export default function Content({ children }) {
     <Box
       sx={{
         ml: {
-          lg: drawerOpen ? `${drawerOpenWidth}px` : `${drawerCloseWidth}px`,
+          lg: drawer ? `${drawerOpenWidth}px` : `${drawerCloseWidth}px`,
         },
         minHeight: "100vh",
         transition: "margin linear 0.3s",

@@ -3,7 +3,6 @@ import {
   hdlExpandedNavItems,
   hdlExpandedNavItemsBackUp,
   hdlSelectedNavItems,
-  hdlSelectedNavItemsBackUp,
 } from "@/lib/rtk/features/common/dashboardSlice";
 import { Box, Typography } from "@mui/material";
 import { TreeItem, TreeView } from "@mui/x-tree-view";
@@ -45,13 +44,11 @@ export default function DashboardSidebarNav({ navItems }) {
       let items = pathNames[pathNames.length - 1];
       dispatch(hdlSelectedNavItems(items));
       dispatch(hdlExpandedNavItems(pathNames));
-      dispatch(hdlSelectedNavItemsBackUp(items));
       dispatch(hdlExpandedNavItemsBackUp(pathNames));
     } else {
       pathNames = pathNames[0] == "" ? ["/"] : pathNames;
       dispatch(hdlSelectedNavItems(pathNames));
       dispatch(hdlExpandedNavItems(pathNames));
-      dispatch(hdlSelectedNavItemsBackUp(pathNames));
       dispatch(hdlExpandedNavItemsBackUp(pathNames));
     }
   }, []);
@@ -67,14 +64,16 @@ export default function DashboardSidebarNav({ navItems }) {
       dispatch(hdlExpandedNavItemsBackUp(toggleNodeIds));
     } else {
       if (!expandedNavItems.includes(parent)) {
+        dispatch(hdlSelectedNavItems([nodeId]));
         dispatch(hdlExpandedNavItems([nodeId]));
         dispatch(hdlExpandedNavItemsBackUp([nodeId]));
       } else {
-        let indexOfParentId = expandedNavItems.indexOf(parent);
-        let items = expandedNavItems.splice(
-          indexOfParentId + 1,
-          expandedNavItems.length - 1
-        );
+        let parentIdPosition = expandedNavItems.indexOf(parent) + 1;
+        let items =
+          expandedNavItems.length > parentIdPosition
+            ? expandedNavItems.slice(0, parentIdPosition)
+            : expandedNavItems;
+        dispatch(hdlSelectedNavItems([nodeId]));
         dispatch(hdlExpandedNavItems([...items, nodeId]));
         dispatch(hdlExpandedNavItemsBackUp([...items, nodeId]));
       }

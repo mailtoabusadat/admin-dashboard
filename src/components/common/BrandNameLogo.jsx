@@ -1,11 +1,12 @@
 "use client";
 import {
   hdlClickRadioBtn,
-  hdlDrawerOpen,
+  hdlDrawer,
   hdlExpandedNavItems,
+  hdlExpandedNavItemsBackUp,
   hdlSelectedNavItems,
 } from "@/lib/rtk/features/common/dashboardSlice";
-import { Box, Typography } from "@mui/material";
+import { Box } from "@mui/material";
 import NextImage from "next/image";
 import NextLink from "next/link";
 import {
@@ -16,13 +17,17 @@ import {
 import { useDispatch, useSelector } from "react-redux";
 
 export default function BrandNameLogo() {
-  const { drawerOpen } = useSelector((state) => state.dashboard);
+  const { drawer } = useSelector((state) => state.dashboard);
   const dispatch = useDispatch();
   const hdlCloseDrawer = () => {
-    dispatch(hdlDrawerOpen(false));
+    dispatch(hdlDrawer(false));
     dispatch(hdlClickRadioBtn(true));
-    dispatch(hdlSelectedNavItems([]));
     dispatch(hdlExpandedNavItems([]));
+  };
+  const hdlClickLogo = () => {
+    dispatch(hdlExpandedNavItems([]));
+    dispatch(hdlSelectedNavItems([]));
+    dispatch(hdlExpandedNavItemsBackUp([]));
   };
   return (
     <Box
@@ -36,31 +41,28 @@ export default function BrandNameLogo() {
       }}
       className="logo-name"
     >
-      <NextLink href="/">
+      <NextLink href="/" onClick={hdlClickLogo}>
         <Box
           component="figure"
           sx={{ maxWidth: "42px", pl: "1px", flexShrink: "0" }}
         >
           <NextImage
-            src="/images/logo/walton-logo-white.png"
+            src="/images/logo/raptor-logo.png"
             alt="walton-logo"
-            width="300"
-            height="300"
+            width="211"
+            height="194"
           />
-        </Box>{" "}
-        <Typography
-          sx={{
-            color: "white",
-            fontSize: "18px",
-            whiteSpace: "nowrap",
-          }}
-          variant="h6"
-          title={"OSS"}
-        >
-          One Stop Solution
-        </Typography>
+        </Box>
+        <Box component="figure" sx={{ maxWidth: "130px", flexShrink: "0" }}>
+          <NextImage
+            src="/images/logo/raptor-logo-text.png"
+            alt="walton-logo-text"
+            width="907"
+            height="199"
+          />
+        </Box>
       </NextLink>
-      {drawerOpen ? (
+      {drawer ? (
         <>
           <MdOutlineRadioButtonChecked
             className="lg-icon"
@@ -79,7 +81,7 @@ export default function BrandNameLogo() {
         <MdOutlineRadioButtonUnchecked
           className="lg-icon"
           onClick={() => {
-            dispatch(hdlDrawerOpen(true));
+            dispatch(hdlDrawer(true));
           }}
         />
       )}

@@ -1,5 +1,5 @@
 "use client";
-import SimpleBackdrop from "@/components/common/SimpleBackdrop";
+import { hdlBackDrop } from "@/lib/rtk/features/common/dashboardSlice";
 import theme from "@/utility/ThemeRegistry/theme";
 import { yupResolver } from "@hookform/resolvers/yup";
 import {
@@ -21,7 +21,7 @@ import { Controller, useForm } from "react-hook-form";
 import { MdOutlineLogin, MdVisibility, MdVisibilityOff } from "react-icons/md";
 import { toast } from "react-toastify";
 import * as yup from "yup";
-
+import { useDispatch, useSelector } from "react-redux";
 const schema = yup.object({
   userId: yup.string().required().label("User ID"),
   password: yup
@@ -37,13 +37,13 @@ const defaultValues = {
 };
 
 export default function LoginForm() {
-  const [backdropOpen, setBackdropOpen] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
+  const dispatch = useDispatch();
   const searchParams = useSearchParams();
   const callbackUrl = searchParams.get("callbackUrl");
   const router = useRouter();
   const onSubmit = async (data) => {
-    setBackdropOpen(true);
+    dispatch(hdlBackDrop(true));
     const result = await signIn("credentials", {
       ...data,
       redirect: false,
@@ -51,7 +51,7 @@ export default function LoginForm() {
     });
     if (result.status == 200 && result?.ok) {
       toast.success("Welcome! Your login was successful.");
-      setBackdropOpen(false);
+      dispatch(hdlBackDrop(false));
       if (callbackUrl !== null && callbackUrl !== "/") {
         router.push(callbackUrl);
         router.refresh();
@@ -60,7 +60,7 @@ export default function LoginForm() {
         router.refresh();
       }
     } else {
-      setBackdropOpen(false);
+      dispatch(hdlBackDrop(false));
       toast.error(result.error);
     }
   };
@@ -93,7 +93,6 @@ export default function LoginForm() {
         alt="login-bg"
         className="object-cover object-center"
       />
-      {backdropOpen && <SimpleBackdrop />}
       <Box
         sx={{
           height: "100vh",
