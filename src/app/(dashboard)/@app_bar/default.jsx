@@ -1,5 +1,5 @@
 import AppBarComp from "@/components/common/appBar/AppBarComp";
 
-export default function AppBarPage() {
+export default function DefaultAppBarPage() {
   return <AppBarComp />;
 }

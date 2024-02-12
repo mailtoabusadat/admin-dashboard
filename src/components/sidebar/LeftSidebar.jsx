@@ -1,87 +1,13 @@
-"use client";
-import {
-  hdlClickRadioBtn,
-  hdlDrawer,
-  hdlExpandedNavItems,
-} from "@/lib/rtk/features/common/dashboardSlice";
-import { Box, Drawer } from "@mui/material";
-import { useRef } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import BrandNameLogo from "@/components/common/BrandNameLogo";
+import DashboardSidebarNav from "@/components/nav/DashboardSidebarNav";
+import adminNavItems from "@/utility/admin-nav-Items";
+import SidebarNav from "@/components/common/SidebarNav";
 
-export default function NavSidebar({ children }) {
-  const {
-    drawer,
-    drawerOpenWidth,
-    drawerCloseWidth,
-    clickRadioBtn,
-    expandedNavItemsBackUp,
-  } = useSelector((state) => state.dashboard);
-
-  const asideElement = useRef();
-  const dispatch = useDispatch();
-
-  const hdlMouseEnter = () => {
-    console.log("expandedNavItemsBackUp", expandedNavItemsBackUp);
-    if (!clickRadioBtn && !drawer) {
-      asideElement.current.classList.add("aside-hover");
-      dispatch(hdlExpandedNavItems(expandedNavItemsBackUp));
-    }
-  };
-
-  const hdlMouseLeave = () => {
-    dispatch(hdlClickRadioBtn(false));
-    asideElement.current.classList.remove("aside-hover");
-    if (!drawer) {
-      dispatch(hdlExpandedNavItems([]));
-    }
-  };
-
+export default function LeftSidebar() {
   return (
-    <Box
-      component="aside"
-      ref={asideElement}
-      onMouseEnter={hdlMouseEnter}
-      onMouseLeave={hdlMouseLeave}
-      className={drawer ? "active" : ""}
-      sx={{
-        ".MuiDrawer-paper": {
-          width: `${drawerCloseWidth}px`,
-        },
-        "&.aside-hover,&.active": {
-          ".MuiDrawer-paper": {
-            width: `${drawerOpenWidth}px`,
-          },
-        },
-      }}
-    >
-      <Drawer
-        anchor="left"
-        variant="permanent"
-        ModalProps={{
-          keepMounted: true, // Better open performance on mobile.
-        }}
-        open={drawer}
-        onClose={() => dispatch(hdlDrawer(false))}
-        sx={{
-          display: { xs: "none", lg: "block" },
-        }}
-      >
-        {children}
-      </Drawer>
-      <Drawer
-        anchor="left"
-        variant="temporary"
-        ModalProps={{
-          keepMounted: true, // Better open performance on mobile.
-        }}
-        open={drawer}
-        onClose={() => dispatch(hdlDrawer(false))}
-        sx={{
-          display: { xs: "block", lg: "none" },
-        }}
-      >
-        {children}
-      </Drawer>
-    </Box>
+    <SidebarNav>
+      <BrandNameLogo />
+      <DashboardSidebarNav navItems={adminNavItems} />
+    </SidebarNav>
   );
 }
